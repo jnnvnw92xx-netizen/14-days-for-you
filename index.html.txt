@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>14 Days for You 💖</title>
+
+<style>
+  body {
+    background: #fde2e4;
+    font-family: "Courier New", monospace;
+    text-align: center;
+    padding: 30px;
+  }
+
+  h1 {
+    color: #9d0208;
+    font-size: 32px;
+  }
+
+  #app {
+    background: #fff;
+    border: 3px solid #9d0208;
+    padding: 25px;
+    max-width: 420px;
+    margin: auto;
+    border-radius: 12px;
+  }
+
+  input {
+    padding: 10px;
+    width: 80%;
+    margin-top: 10px;
+    font-family: inherit;
+  }
+
+  button {
+    margin-top: 12px;
+    padding: 10px 20px;
+    background: #9d0208;
+    color: white;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  #letter {
+    white-space: pre-wrap;
+    margin-top: 20px;
+    color: #6a040f;
+    font-size: 15px;
+  }
+</style>
+</head>
+
+<body>
+
+<h1>14 Days Apart 💌</h1>
+<p>Solve today’s hint. Unlock your letter.</p>
+
+<div id="app">
+  <h2 id="dayTitle"></h2>
+  <p id="clue"></p>
+
+  <input id="answer" placeholder="Type your answer…" />
+  <br>
+  <button onclick="checkAnswer()">Unlock</button>
+
+  <p id="result"></p>
+  <div id="letter"></div>
+</div>
+
+<script>
+const startDate = new Date("2026-01-03"); // CHANGE THIS
+
+const today = new Date();
+const dayNumber = Math.floor((today - startDate) / (1000*60*60*24)) + 1;
+
+const puzzles = [
+{
+  clue: "Our favourite meal together 🍜",
+  answer: "maggi",
+  letter: `Every version of life feels better with you in it.
+Even something as small as Maggi tastes warmer when I’m sitting next to you.
+You mean more to me than I know how to explain.
+With you, I feel safe, full, calm.
+I am better when I am with you.`
+},
+{
+  clue: "The song I learnt for you 🎶",
+  answer: "afsanay",
+  letter: `I love the way you look at me.
+I love how you treat me.
+I love how everything feels softer and easier when I’m with you.
+Being loved by you feels like being chosen every single day.`
+},
+{
+  clue: "___ puff pass 🌿",
+  answer: "three",
+  letter: `Even when I’m high,
+it’s you I think about.
+
+You’re my calm,
+my thought,
+my favourite feeling.
+
+No matter where my head floats,
+it always comes back to you.`
+},
+{
+  clue: "500 tu de 500 mai deti or ____ chalte",
+  answer: "capital",
+  letter: `I love you to the moon and back.
+Even when we fight.
+Even when we disagree.
+
+For you, I would fight the world.
+For you, I already do.
+Always you.`
+},
+{
+  clue: "You honk my ___ 😏",
+  answer: "boobs",
+  letter: `I love your touch.
+I love how hard it is for me to resist you.
+You make me weak in the best ways.
+And being naughty with you?
+My favourite thing.`
+},
+{
+  clue: "Our baby’s name 🐣",
+  answer: "jandu",
+  letter: `Jandu exists because we do.
+Because we imagine futures together.
+Because loving you makes me want more life, more laughter, more us.`
+},
+{
+  clue: "Red Bull n ___",
+  answer: "diet coke",
+  letter: `Even the random things feel special with you.
+Every sip, every moment, every memory.
+You make ordinary feel like home.`
+},
+{
+  clue: "Mera bhondu ___",
+  answer: "baccha",
+  letter: `You’ll always be my baccha.
+Soft. Loved. Safe.
+And I’ll always protect that smile of yours.`
+},
+{
+  clue: "Grate the cheese on my ___",
+  answer: "dinamita",
+  letter: `Somehow even chaos is fun with you.
+Messy. Loud. Real.
+Just like us.`
+},
+{
+  clue: "Your side of the bed is always ____",
+  answer: "dirty",
+  letter: `And still, I’d choose your side every time.
+Because it smells like you.
+And feels like you belong there.`
+},
+{
+  clue: "My favourite thing about you is your ____",
+  answer: "butt",
+  letter: `Yes, your butt.
+But also your heart.
+And your laugh.
+And the way you exist.`
+},
+{
+  clue: "Where did we go on our first official date?",
+  answer: "tan sukh",
+  letter: `That day still lives in my head.
+The beginning of us.
+The moment everything changed.`
+},
+{
+  clue: "Subha subha motu used to bring me ____",
+  answer: "poha",
+  letter: `You took care of me in ways I never asked for.
+That’s how I knew.
+You were it.`
+},
+{
+  clue: "You will ____ me to the moon and back",
+  answer: "love",
+  letter: `You mean more to me than words allow.
+Without you, I don’t know who I am.
+
+When you see me,
+kiss me a million times.
+Buy me something tasty.
+Because this app?
+I made it with all my love. 💖`
+}
+];
+
+const saved = JSON.parse(localStorage.getItem("days")) || {};
+const dayTitle = document.getElementById("dayTitle");
+const clue = document.getElementById("clue");
+const letterBox = document.getElementById("letter");
+const result = document.getElementById("result");
+
+if (dayNumber < 1 || dayNumber > puzzles.length) {
+  dayTitle.innerText = "Come back tomorrow 💭";
+} else {
+  dayTitle.innerText = "Day " + dayNumber;
+  clue.innerText = puzzles[dayNumber - 1].clue;
+
+  if (saved[dayNumber]) {
+    letterBox.innerText = puzzles[dayNumber - 1].letter;
+  }
+}
+
+function checkAnswer() {
+  const input = document.getElementById("answer").value.toLowerCase();
+  const correct = puzzles[dayNumber - 1].answer;
+
+  if (input === correct) {
+    saved[dayNumber] = true;
+    localStorage.setItem("days", JSON.stringify(saved));
+    letterBox.innerText = puzzles[dayNumber - 1].letter;
+    result.innerText = "Unlocked 💖";
+  } else {
+    result.innerText = "Try again 🫣";
+  }
+}
+</script>
+
+</body>
+</html>
